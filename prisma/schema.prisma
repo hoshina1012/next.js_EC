@@ -110,7 +110,7 @@ model Types{
 }
 
 model Users{
-  id Int @id @unique
+  id Int @id @default(autoincrement())
   mail String @unique
   password String
   name String
