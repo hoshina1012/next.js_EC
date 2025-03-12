@@ -1,21 +1,49 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // ページ遷移用
 
 export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // エラーメッセージ用
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("名前:", name);
-    console.log("メールアドレス:", email);
-    console.log("パスワード:", password);
+    setErrorMessage(""); // エラーをリセット
+
+    try {
+      const res = await fetch("/api/signUpSeller", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, mail: email, password }),
+      });
+
+      if (!res.ok) {
+        // 既に登録されている場合
+        if (res.status === 400) {
+          setErrorMessage("メールアドレスは既に登録されています");
+        } else {
+          setErrorMessage("登録に失敗しました。もう一度お試しください。");
+        }
+        return;
+      }
+
+      // 成功時は /login に移動してメッセージを表示
+      router.push("/login?message=登録に成功しました！ログインしましょう！");
+    } catch (error) {
+      console.error("エラー:", error);
+      setErrorMessage("登録に失敗しました。もう一度お試しください。");
+    }
   };
 
   return (
     <div className="max-w-md mx-auto mt-10 p-4">
       <h1 className="text-2xl font-bold mb-4 text-center">新規販売者登録</h1>
+
+      {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>} {/* エラー表示 */}
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block font-medium">名前</label>
