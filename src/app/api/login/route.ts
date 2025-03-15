@@ -24,7 +24,8 @@ export async function POST(req: Request) {
     // 成功時、ユーザーIDを返す
     return NextResponse.json({ 
       userId: user.id, 
-      userName: user.name
+      userName: user.name,
+      userStatus: user.status
     }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: "サーバーエラー" }, { status: 500 });

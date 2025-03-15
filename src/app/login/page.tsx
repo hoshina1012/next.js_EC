@@ -1,4 +1,5 @@
 "use client";
+import Header from "../components/header";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -21,11 +22,9 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
 
-      console.log("✅ API リクエスト送信完了");
       console.log("📡 API ステータスコード:", response.status); // ← ステータスコードを表示
 
       if (!response.ok) {
-        console.error("❌ ログイン失敗 - ステータスコード:", response.status);
         throw new Error("ログインに失敗しました");
       }
 
@@ -33,7 +32,7 @@ export default function Login() {
       console.log("🎉 ログイン API レスポンス:", data);
       
       // localStorageに保存
-      localStorage.setItem("user", JSON.stringify({ id: data.userId, name: data.userName }));
+      localStorage.setItem("user", JSON.stringify({ id: data.userId, name: data.userName, status: data.userStatus }));
 
       // ページ遷移後にリロード（Topコンポーネントで反映されるようにする）
       router.push(`/user/${data.userId}`);
@@ -44,38 +43,41 @@ export default function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-4">
-      {message && <p className="text-green-500 text-center mb-4">{message}</p>}
-      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-      <h1 className="text-2xl font-bold mb-4 text-center">ログイン</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block font-medium">メールアドレス</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border rounded"
-            required
-          />
-        </div>
-        <div>
-          <label className="block font-medium">パスワード</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border rounded"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-        >
-          ログイン
-        </button>
-      </form>
+    <div>
+      <Header />
+      <div className="max-w-md mx-auto mt-10 p-4">
+        {message && <p className="text-green-500 text-center mb-4">{message}</p>}
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        <h1 className="text-2xl font-bold mb-4 text-center">ログイン</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block font-medium">メールアドレス</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+          <div>
+            <label className="block font-medium">パスワード</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          >
+            ログイン
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
