@@ -91,3 +91,36 @@ export async function POST(req: NextRequest) {
     await prisma.$disconnect();
   }
 }
+
+export async function GET() {
+  try {
+    const products = await prisma.products.findMany({
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        description: true,
+        stock: true,
+        userId: true,  // categoryIdも選択する
+        user: {  // category のリレーションを select 内で指定
+          select: {
+            name: true,  // category テーブルの name フィールドを取得
+          }
+        },
+        categoryId: true,  // categoryIdも選択する
+        category: {  // category のリレーションを select 内で指定
+          select: {
+            name: true,  // category テーブルの name フィールドを取得
+          }
+        }
+      }
+    });
+
+    return NextResponse.json(products);
+  } catch (error) {
+    console.error("商品取得エラー:", error);
+    return NextResponse.json({ error: "商品取得に失敗しました" }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+}

@@ -13,109 +13,113 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Carts{
-  id Int @id @unique
-  userId Int
-  productId Int
+model Carts {
+  id         Int      @id @unique
+  userId     Int
+  productId  Int
   categoryId Int
-  kindId Int
-  quantity Int
+  kindId     Int
+  quantity   Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Categories {
+  id       Int        @id @unique
+  name     String
+  products Products[]
+}
+
+model Colors {
+  id   Int    @id @unique
+  name String
+}
+
+model Helps {
+  id        Int      @id @unique
+  userId    Int
+  title     String
+  detail    String
+  status    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Categories{
-  id Int @id @unique
-  name String
-}
-
-model Colors{
-  id Int @id @unique
-  name String
-}
-
-model Helps{
-  id Int @id @unique
-  userId Int
-  title String
-  detail String
-  status Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model OrderItems{
-  id Int @id @unique
-  orderId Int
+model OrderItems {
+  id        Int @id @unique
+  orderId   Int
   productId Int
-  quantity Int
-  kindId Int
-  status Int
+  quantity  Int
+  kindId    Int
+  status    Int
 }
 
-model Orders{
-  id Int @id @unique
-  userId Int
-  amount Int
+model Orders {
+  id        Int      @id @unique
+  userId    Int
+  amount    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Payments{
-  id Int @id @unique
-  userId Int
-  name String
+model Payments {
+  id        Int      @id @unique
+  userId    Int
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Products{
-  id Int @id @unique
-  userId Int
-  categoryId Int
-  name String
+model Products {
+  id          Int        @id @unique
+  userId      Int
+  user    Users @relation(fields: [userId], references: [id])
+  categoryId  Int
+  category    Categories @relation(fields: [categoryId], references: [id])
+  name        String
   description String
-  price Int
-  stock Int
+  price       Int
+  stock       Int
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model RacketTypes {
+  id        Int @id @unique
+  productId Int
+  typeId    Int
+}
+
+model RubberColors {
+  id        Int @id @unique
+  productId Int
+  colorId   Int
+}
+
+model ShoesSizes {
+  id        Int @id @unique
+  productId Int
+  sizeId    Int
+}
+
+model Sizes {
+  id   Int    @id @unique
+  name String
+}
+
+model Types {
+  id   Int    @id @unique
+  name String
+}
+
+model Users {
+  id        Int      @id @default(autoincrement())
+  mail      String   @unique
+  password  String
+  name      String
+  authority Int      @default(0)
+  status    Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model RacketTypes{
-  id Int @id @unique
-  productId Int
-  typeId Int
-}
-
-model RubberColors{
-  id Int @id @unique
-  productId Int
-  colorId Int
-}
-
-model ShoesSizes{
-  id Int @id @unique
-  productId Int
-  sizeId Int
-}
-
-model Sizes{
-  id Int @id @unique
-  name String
-}
-
-model Types{
-  id Int @id @unique
-  name String
-}
-
-model Users{
-  id Int @id @default(autoincrement())
-  mail String @unique
-  password String
-  name String
-  authority Int @default(0)
-  status Int @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  products Products[]
 }
