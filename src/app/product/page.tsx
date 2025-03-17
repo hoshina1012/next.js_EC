@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Header from "../components/header";
 
 export default function ProductList() {
@@ -48,6 +49,9 @@ export default function ProductList() {
               <h2 className="text-2xl font-semibold">{product.name}</h2>
               <p>価格: {product.price}円</p>
               <p>在庫: {product.stock}</p>
+              <Link href={`/product/${product.id}`} className="text-blue-500 hover:underline mt-2 block">
+                詳細
+              </Link>
             </div>
           );
         })}
