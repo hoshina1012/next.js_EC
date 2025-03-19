@@ -141,7 +141,7 @@ export default function AddProductPage() {
     <div>
       <Header />
       <div className="max-w-lg mx-auto mt-10">
-        <h1 className="text-2xl font-bold text-center mb-6">新規商品追加</h1>
+        <h1 className="text-2xl font-bold text-center mb-6">新規商品登録</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* カテゴリ選択 */}
           <div>
