@@ -31,8 +31,9 @@ model Categories {
 }
 
 model Colors {
-  id   Int    @id @unique
-  name String
+  id           Int            @id @unique
+  name         String
+  rubberColors RubberColors[]
 }
 
 model Helps {
@@ -71,55 +72,66 @@ model Payments {
 }
 
 model Products {
-  id          Int        @id @unique
-  userId      Int
-  user    Users @relation(fields: [userId], references: [id])
-  categoryId  Int
-  category    Categories @relation(fields: [categoryId], references: [id])
-  name        String
-  description String
-  price       Int
-  stock       Int
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id           Int            @id @unique
+  userId       Int
+  user         Users          @relation(fields: [userId], references: [id])
+  categoryId   Int
+  category     Categories     @relation(fields: [categoryId], references: [id])
+  name         String
+  description  String
+  price        Int
+  stock        Int
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  racketTypes  RacketTypes[]
+  rubberColors RubberColors[]
+  shoesSizes   ShoesSizes[]
 }
 
 model RacketTypes {
-  id        Int @id @unique
+  id        Int      @id @unique
   productId Int
   typeId    Int
+  product   Products @relation(fields: [productId], references: [id])
+  type      Types    @relation(fields: [typeId], references: [id])
 }
 
 model RubberColors {
-  id        Int @id @unique
+  id        Int      @id @unique
   productId Int
   colorId   Int
+  product   Products @relation(fields: [productId], references: [id])
+  color     Colors   @relation(fields: [colorId], references: [id])
 }
 
 model ShoesSizes {
-  id        Int @id @unique
+  id        Int      @id @unique
   productId Int
   sizeId    Int
+  product   Products @relation(fields: [productId], references: [id])
+  size      Sizes    @relation(fields: [sizeId], references: [id])
 }
 
 model Sizes {
-  id   Int    @id @unique
-  name String
+  id         Int          @id @unique
+  name       String
+  shoesSizes ShoesSizes[]
 }
 
 model Types {
-  id   Int    @id @unique
-  name String
+  id          Int           @id @unique
+  name        String
+  racketTypes RacketTypes[]
 }
 
 model Users {
-  id        Int      @id @default(autoincrement())
-  mail      String   @unique
+  id        Int        @id @default(autoincrement())
+  mail      String     @unique
   password  String
   name      String
-  authority Int      @default(0)
-  status    Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  products Products[]
+  authority Int        @default(0)
+  status    Int        @default(0)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  products  Products[]
 }

@@ -6,6 +6,8 @@ import Header from "../components/header";
 export default function ProductList() {
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState<{ id: string; name: string; status: number } | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 6; // 1ページに表示する商品数
 
   useEffect(() => {
     // ローカルストレージからユーザー情報を取得
@@ -32,12 +34,20 @@ export default function ProductList() {
     fetchProducts();
   }, []);
 
+  // 現在のページの商品を取得
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const paginatedProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  const totalPages = Math.ceil(products.length / productsPerPage);
+
   return (
     <div>
       <Header />
       <h1 className="text-3xl font-bold my-4 max-w-4xl mx-auto text-center">商品一覧</h1>
+
+      {/* 商品リスト */}
       <div className="grid grid-cols-3 gap-4 max-w-4xl mx-auto">
-        {products.map((product: any) => {
+        {paginatedProducts.map((product: any) => {
           const isMyProduct = user?.id && product.userId === user.id;
           return (
             <div
@@ -55,6 +65,25 @@ export default function ProductList() {
             </div>
           );
         })}
+      </div>
+
+      {/* ページングボタン */}
+      <div className="flex justify-center mt-4 space-x-4">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className={`px-4 py-2 border rounded ${currentPage === 1 ? "text-gray-400 cursor-not-allowed" : "hover:bg-gray-200"}`}
+        >
+          前へ
+        </button>
+        <span className="px-4 py-2">{currentPage} / {totalPages}</span>
+        <button
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          className={`px-4 py-2 border rounded ${currentPage === totalPages ? "text-gray-400 cursor-not-allowed" : "hover:bg-gray-200"}`}
+        >
+          次へ
+        </button>
       </div>
     </div>
   );
