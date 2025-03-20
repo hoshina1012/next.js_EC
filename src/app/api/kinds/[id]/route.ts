@@ -28,21 +28,21 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       const racketTypes = await prisma.racketTypes.findMany({
         where: { productId: numericProductId }, // 数値のまま渡す
         include: { type: true },
-        orderBy: { type: { name: "asc" } },
+        orderBy: { type: { id: "asc" } },
       });
       kinds = racketTypes.map((r) => r.type.name); // `type.name` を取得
     } else if (product.category.name === "ラバー") {
       const rubberColors = await prisma.rubberColors.findMany({
         where: { productId: numericProductId }, // 数値のまま渡す
         include: { color: true },
-        orderBy: { color: { name: "asc" } }
+        orderBy: { color: { id: "asc" } }
       });
       kinds = rubberColors.map((r) => r.color.name); // `color.name` を取得
     } else if (product.category.name === "シューズ") {
       const shoesSizes = await prisma.shoesSizes.findMany({
         where: { productId: numericProductId }, // 数値のまま渡す
         include: { size: true },
-        orderBy: { size: { name: "asc" } },
+        orderBy: { size: { id: "asc" } },
       });
       kinds = shoesSizes.map((r) => r.size.name); // `size.name` を取得
     }
