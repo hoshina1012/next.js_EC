@@ -57,3 +57,27 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "エラーが発生しました" }, { status: 500 });
   }
 }
+
+export async function GET(req: Request) {
+  try {
+    // リクエストURLからuserIdを取得
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get("userId");
+
+    if (!userId) {
+      return NextResponse.json({ message: "userIdが必要です" }, { status: 400 });
+    }
+
+    const cartItems = await prisma.carts.findMany({
+      where: { userId: Number(userId) },
+      include: {
+        product: true, // 商品情報を取得
+      },
+    });
+
+    return NextResponse.json(cartItems, { status: 200 });
+  } catch (error) {
+    console.error("カート取得エラー:", error);
+    return NextResponse.json({ message: "カート情報の取得に失敗しました" }, { status: 500 });
+  }
+}

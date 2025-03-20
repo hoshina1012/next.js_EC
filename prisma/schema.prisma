@@ -17,6 +17,7 @@ model Carts {
   id         Int      @id @unique
   userId     Int
   productId  Int
+  product   Products @relation(fields: [productId], references: [id])
   categoryId Int
   kindId     Int
   quantity   Int
@@ -86,6 +87,7 @@ model Products {
   racketTypes  RacketTypes[]
   rubberColors RubberColors[]
   shoesSizes   ShoesSizes[]
+  carts    Carts[]
 }
 
 model RacketTypes {
