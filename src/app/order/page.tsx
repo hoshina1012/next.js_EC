@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import Header from "../components/header";
-import { useRouter } from "next/navigation"; 
 
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<any[]>([]);
@@ -9,7 +8,6 @@ export default function CartPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [kindNames, setKindNames] = useState<{ [key: string]: string }>({});
   const [totalAmount, setTotalAmount] = useState<number>(0); // 合計金額を格納するための状態
-  const router = useRouter();
 
   // ユーザーIDを取得（例: localStorage）
   useEffect(() => {
@@ -90,28 +88,6 @@ export default function CartPage() {
     setTotalAmount(total); // 合計金額を状態にセット
   }, [cartItems]);
 
-  // カートアイテムを削除する
-  const handleRemoveItem = async (itemId: string) => {
-    try {
-      const res = await fetch(`/api/cart/remove/${itemId}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
-        // 削除後にカートアイテムを再取得して状態を更新
-        setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
-      } else {
-        console.error("アイテムの削除に失敗しました");
-      }
-    } catch (error) {
-      console.error("削除中にエラーが発生しました", error);
-    }
-  };
-
-  // 購入ボタンがクリックされたときに遷移する
-  const handlePurchase = () => {
-    router.push("/order"); // /order に遷移
-  };
-
   if (loading) return <p className="text-center mt-10">読み込み中...</p>;
   if (cartItems.length === 0) return <p className="text-center mt-10">カートは空です</p>;
 
@@ -119,7 +95,7 @@ export default function CartPage() {
     <div>
       <Header />
       <main className="p-4 max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center">カート</h1>
+        <h1 className="text-4xl font-bold text-center">注文手続き</h1>
         <div className="mt-6">
           {cartItems.map((item, index) => (
             <div key={index} className="p-4 mb-4 border rounded-lg shadow">
@@ -138,12 +114,6 @@ export default function CartPage() {
                   : "サイズ"}
                 ：{kindNames[item.kindId]}
               </p>
-              <button
-                onClick={() => handleRemoveItem(item.id)} // 削除ボタンを押したときに削除処理
-                className="mt-2 bg-red-500 text-white px-4 py-2 rounded"
-              >
-                削除
-              </button>
             </div>
           ))}
         </div>
@@ -151,12 +121,6 @@ export default function CartPage() {
           <p>合計金額: {totalAmount}円</p>
         </div>
         <div className="mt-6 text-center">
-          <button
-            onClick={handlePurchase}
-            className="mt-6 text-3xl bg-blue-500 text-white px-30 py-8 rounded"
-          >
-            購入する
-          </button>
         </div>
       </main>
     </div>
