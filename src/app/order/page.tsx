@@ -144,6 +144,19 @@ export default function CartPage() {
           }),
         });
       }
+
+      // 3. 支払い情報を登録 (paymentsテーブル)
+      const paymentRes = await fetch("/api/payments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: orderId, // orders テーブルと同じIDを使用
+          userId,
+          name: cardHolderName,
+        }),
+      });
+  
+      if (!paymentRes.ok) throw new Error("支払い情報の登録に失敗しました");
   
       alert("購入が完了しました");
       setCartItems([]); // カートを空にする
@@ -154,8 +167,8 @@ export default function CartPage() {
   };
   
 
-  if (loading) return <p className="text-center mt-10">読み込み中...</p>;
-  if (cartItems.length === 0) return <p className="text-center mt-10">カートは空です</p>;
+  if (loading) return <div><Header /><p className="text-center mt-10">読み込み中...</p></div>;
+  if (cartItems.length === 0) return <div><Header /><p className="text-center mt-10">カートは空です</p></div>;
 
   return (
     <div>
