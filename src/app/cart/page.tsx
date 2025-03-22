@@ -112,8 +112,8 @@ export default function CartPage() {
     router.push("/order"); // /order に遷移
   };
 
-  if (loading) return <p className="text-center mt-10">読み込み中...</p>;
-  if (cartItems.length === 0) return <p className="text-center mt-10">カートは空です</p>;
+  if (loading) return <div><Header /><p className="text-center mt-10">読み込み中...</p></div>;
+  if (cartItems.length === 0) return <div><Header /><p className="text-center mt-10">カートは空です</p></div>;
 
   return (
     <div>

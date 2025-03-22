@@ -33,6 +33,9 @@ export default function Header() {
               <a href={`/user/${user.id}`} className="hover:underline">
                 ようこそ {user.name} さん！
               </a>
+              <a href="/cart" className="hover:underline">
+                カート
+              </a>
               <button onClick={handleLogout} className="hover:underline">
                 ログアウト
               </button>

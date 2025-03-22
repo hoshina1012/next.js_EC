@@ -95,8 +95,8 @@ export default function ProductDetail() {
     }
   };
 
-  if (loading) return <p className="text-center mt-10">読み込み中...</p>;
-  if (!product) return <p className="text-center mt-10">商品が見つかりません</p>;
+  if (loading) return <div><Header /><p className="text-center mt-10">読み込み中...</p></div>;
+  if (!product) return <div><Header /><p className="text-center mt-10">商品が見つかりません</p></div>;
 
   return (
     <div>
