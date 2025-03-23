@@ -116,11 +116,19 @@ export default async function UserPage({ params }: UserPageProps) {
             すべての商品を見る
           </Link>
         </div>
-        <div className="mt-4">
+        <div className="mt-8">
           <Link href="/orderHistory" className="text-blue-500 hover:underline">
             注文履歴
           </Link>
         </div>
+        {user.status === 1 && (
+          <div className="mt-4">
+            <Link href="/orderManagement" className="text-blue-500 hover:underline">
+              受注履歴
+            </Link>
+            <p className="text-gray-500 text-xs">未発送のものが無いようによく確認しましょう</p>
+          </div>
+        )}
       </div>
     </div>
   );
