@@ -50,6 +50,7 @@ model Helps {
 model OrderItems {
   id        Int @id @unique
   orderId   Int
+  order     Orders     @relation(fields: [orderId], references: [id])
   productId Int
   quantity  Int
   kindId    Int
@@ -62,6 +63,7 @@ model Orders {
   amount    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  OrderItems OrderItems[]
 }
 
 model Payments {
