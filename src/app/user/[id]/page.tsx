@@ -84,6 +84,13 @@ export default async function UserPage({ params }: UserPageProps) {
         <h1 className="text-2xl font-bold mb-4">ユーザー情報</h1>
         <p><strong>名前:</strong> {user.name}</p>
         <p><strong>メールアドレス:</strong> {user.mail}</p>
+        {user.authority === 1 && (
+          <div className="mt-4">
+            <Link href="/admin" className="text-blue-500 hover:underline">
+              管理画面
+            </Link>
+          </div>
+        )}
         {user.status === 1 && (
           <div className="mt-6">
             <h2 className="text-xl font-semibold mb-2">マイ商品</h2>
