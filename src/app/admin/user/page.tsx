@@ -1,5 +1,6 @@
 "use client";
 import Header from "@/app/components/headerAdmin";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface User {
@@ -73,6 +74,11 @@ export default function UserList() {
             次へ
           </button>
         </div>
+      </div>
+      <div className="mt-4 text-center">
+          <Link href="/admin" className="text-blue-500 hover:underline">
+              管理画面に戻る
+          </Link>
       </div>
     </div>
   );
