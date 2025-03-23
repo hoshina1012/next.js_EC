@@ -17,11 +17,31 @@ interface UserPageProps {
   params: { id: string }; // URL のパラメータは string 型
 }
 
+// `generateStaticParams` を定義
+export async function generateStaticParams() {
+  const users = await prisma.users.findMany({
+    select: { id: true },
+  });
+
+  return users.map((user) => ({
+    id: user.id.toString(),
+  }));
+}
+
 // ユーザー情報を取得
 export default async function UserPage({ params }: UserPageProps) {
-  const userId = parseInt(params.id, 10); // string → number に変換
+  const { id } = await params;
 
-  // 変換結果が NaN ならエラーメッセージを表示
+  if (!id) {
+    return (
+      <div>
+        <Header />
+        <div className="text-center text-red-500">無効なユーザーIDです。</div>
+      </div>
+    );
+  }
+
+  const userId = parseInt(id, 10);
   if (isNaN(userId)) {
     return (
       <div>
@@ -32,7 +52,7 @@ export default async function UserPage({ params }: UserPageProps) {
   }
 
   const user = await prisma.users.findUnique({
-    where: { id: userId }, // number 型で検索
+    where: { id: userId },
   });
 
   if (!user) {

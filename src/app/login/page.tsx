@@ -22,7 +22,7 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
 
-      console.log("📡 API ステータスコード:", response.status); // ← ステータスコードを表示
+      console.log("📡 API ステータスコード:", response.status); // ステータスコードを表示
 
       if (!response.ok) {
         throw new Error("ログインに失敗しました");
@@ -34,9 +34,8 @@ export default function Login() {
       // localStorageに保存
       localStorage.setItem("user", JSON.stringify({ id: data.userId, name: data.userName, status: data.userStatus }));
 
-      // ページ遷移後にリロード（Topコンポーネントで反映されるようにする）
+      // ユーザー個別ページに遷移
       router.push(`/user/${data.userId}`);
-      setTimeout(() => window.location.reload(), 100); // 短い遅延をつける
     } catch (err) {
       setError("ログインに失敗しました。メールアドレスまたはパスワードが間違っています。");
     }
