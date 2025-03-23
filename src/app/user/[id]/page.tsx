@@ -129,6 +129,11 @@ export default async function UserPage({ params }: UserPageProps) {
             <p className="text-gray-500 text-xs">未発送のものが無いようによく確認しましょう</p>
           </div>
         )}
+        <div className="mt-8">
+          <Link href="/help" className="text-blue-500 hover:underline">
+            お問い合わせはこちらから
+          </Link>
+        </div>
       </div>
     </div>
   );
