@@ -78,6 +78,11 @@ export default function OrderDetailPage() {
           </tbody>
         </table>
       </div>
+      <div className="mt-4 text-center">
+          <Link href="/admin/order" className="text-blue-500 hover:underline">
+              注文一覧に戻る
+          </Link>
+      </div>
     </div>
   );
 }
